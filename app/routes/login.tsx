@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { ShieldCheck, ArrowRight, UserCheck, Lock, User } from "lucide-react";
+import { ArrowRight, UserCheck, Lock, User } from "lucide-react";
 import { apiFetch, useAuthStore, switchRoleQuick } from "~/lib/api";
 import type { AuthUser, Role } from "~/lib/types";
 import { ROLE_LABELS } from "~/lib/constants";
+import { ICON_VERSION } from "~/lib/icon-version.generated";
+
+const LOGO_MARK = `${import.meta.env.BASE_URL}logo-mark.png?v=${ICON_VERSION}`;
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -56,8 +59,8 @@ export default function LoginPage() {
     <div className="flex min-h-screen flex-col justify-center bg-gradient-to-br from-emerald-950 via-emerald-900 to-slate-900 px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-md">
         <div className="flex flex-col items-center text-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-800/80 shadow-xl ring-2 ring-amber-400/60">
-            <ShieldCheck className="h-9 w-9 text-amber-400" />
+          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white p-1.5 shadow-xl ring-2 ring-amber-400/60">
+            <img src={LOGO_MARK} alt="Logo BAZNAS Kabupaten Cianjur" className="h-full w-full object-contain" />
           </div>
           <h1 className="mt-4 text-2xl font-extrabold tracking-tight text-white">
             Aplikasi Pendistribusian BAZNAS

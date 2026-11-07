@@ -11,21 +11,45 @@ import {
 } from "react-router";
 import type { Route } from "./+types/root";
 import { useAuthStore, switchRoleQuick } from "~/lib/api";
+import { ICON_VERSION } from "~/lib/icon-version.generated";
 import "./styles/app.css";
 
 const BASE = import.meta.env.BASE_URL;
 
+const SITE = "https://baznas.situs.id"; // the public address: the share image must be an absolute address
+const TITLE = "Pendis BAZNAS — Aplikasi Pendistribusian ZIS";
+const DESCRIPTION =
+  "Sistem informasi registrasi permohonan bantuan, assessment lapangan, moderasi pimpinan, dan dokumentasi penyaluran mustahik BAZNAS.";
+const V = `?v=${ICON_VERSION}`; // changes when the logo changes, so browsers fetch the new icons (scripts/make_icons.py)
+
 export const meta: Route.MetaFunction = () => [
-  { title: "Pendis BAZNAS — Aplikasi Pendistribusian ZIS" },
-  {
-    name: "description",
-    content:
-      "Sistem informasi registrasi permohonan bantuan, assessment lapangan, moderasi pimpinan, dan dokumentasi penyaluran mustahik BAZNAS.",
-  },
+  { title: TITLE },
+  { name: "description", content: DESCRIPTION },
+  { name: "application-name", content: "Pendis BAZNAS" },
+  { name: "apple-mobile-web-app-title", content: "Pendis BAZNAS" },
+  { name: "mobile-web-app-capable", content: "yes" },
+  { property: "og:type", content: "website" },
+  { property: "og:site_name", content: "Pendis BAZNAS" },
+  { property: "og:locale", content: "id_ID" },
+  { property: "og:title", content: TITLE },
+  { property: "og:description", content: DESCRIPTION },
+  { property: "og:url", content: `${SITE}/` },
+  { property: "og:image", content: `${SITE}/og-image.png${V}` },
+  { property: "og:image:width", content: "1200" },
+  { property: "og:image:height", content: "675" },
+  { property: "og:image:alt", content: "Logo BAZNAS Kabupaten Cianjur" },
+  { name: "twitter:card", content: "summary_large_image" },
+  { name: "twitter:title", content: TITLE },
+  { name: "twitter:description", content: DESCRIPTION },
+  { name: "twitter:image", content: `${SITE}/og-image.png${V}` },
 ];
 
 export const links: Route.LinksFunction = () => [
-  { rel: "icon", href: `${BASE}favicon.svg`, type: "image/svg+xml" },
+  { rel: "icon", href: `${BASE}favicon.ico${V}`, sizes: "any" },
+  { rel: "icon", href: `${BASE}icons/favicon-32.png${V}`, type: "image/png", sizes: "32x32" },
+  { rel: "icon", href: `${BASE}icons/favicon-16.png${V}`, type: "image/png", sizes: "16x16" },
+  { rel: "apple-touch-icon", href: `${BASE}icons/apple-touch-icon.png${V}`, sizes: "180x180" },
+  { rel: "manifest", href: `${BASE}manifest.webmanifest${V}` },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
     rel: "preconnect",
@@ -43,7 +67,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <html lang="id">
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#064e3b" />
         <Meta />
         <Links />
