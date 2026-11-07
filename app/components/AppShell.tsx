@@ -9,7 +9,6 @@ import {
   Menu,
   X,
   Sparkles,
-  BookOpen,
 } from "lucide-react";
 import { useAuthStore, switchRoleQuick } from "~/lib/api";
 import { ROLE_LABELS } from "~/lib/constants";
@@ -91,17 +90,6 @@ export function AppShell({ children, title, subtitle, actions }: AppShellProps) 
               </NavLink>
             );
           })}
-
-          <a
-            href="/storybook/index.html"
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center gap-3.5 rounded-2xl bg-emerald-900/25 px-4 py-3 text-sm font-medium text-emerald-200/80 transition hover:bg-emerald-900/70 hover:text-white"
-            title="Komponen UI Storybook"
-          >
-            <BookOpen className="h-5 w-5 shrink-0" />
-            <span>UI Storybook</span>
-          </a>
         </nav>
 
         {/* Interactive POV Role Switcher */}
