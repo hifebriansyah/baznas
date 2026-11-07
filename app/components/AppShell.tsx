@@ -4,15 +4,17 @@ import {
   LayoutDashboard,
   FileText,
   Users,
-  ShieldCheck,
+  CircleUserRound,
   LogOut,
-  Menu,
   X,
   Sparkles,
 } from "lucide-react";
 import { useAuthStore, switchRoleQuick } from "~/lib/api";
+import { ICON_VERSION } from "~/lib/icon-version.generated";
 import { ROLE_LABELS } from "~/lib/constants";
 import type { Role } from "~/lib/types";
+
+const LOGO_MARK = `${import.meta.env.BASE_URL}logo-mark.png?v=${ICON_VERSION}`;
 
 interface AppShellProps {
   children: ReactNode;
@@ -53,8 +55,8 @@ export function AppShell({ children, title, subtitle, actions }: AppShellProps) 
       <div>
         {/* Brand Header */}
         <div className="flex items-center gap-3 border-b border-emerald-900/80 px-6 py-5">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-800/80 shadow-inner ring-1 ring-amber-400/40">
-            <ShieldCheck className="h-6 w-6 text-amber-400" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white p-0.5 shadow-inner ring-1 ring-amber-400/40">
+            <img src={LOGO_MARK} alt="Logo BAZNAS" className="h-full w-full object-contain" />
           </div>
           <div>
             <div className="flex items-center gap-1.5">
@@ -189,14 +191,6 @@ export function AppShell({ children, title, subtitle, actions }: AppShellProps) 
         {/* Top Bar */}
         <header className="no-print sticky top-0 z-20 flex items-center justify-between border-b border-slate-200/80 bg-white/90 px-4 py-3.5 backdrop-blur-md sm:px-8">
           <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setMobileOpen(true)}
-              className="rounded-xl border border-slate-200 p-2 text-slate-700 hover:bg-slate-100 lg:hidden"
-              aria-label="Buka menu navigasi"
-            >
-              <Menu className="h-5 w-5" />
-            </button>
             <div>
               {title && (
                 <h1 className="text-lg font-bold tracking-tight text-slate-900 sm:text-xl">
@@ -217,8 +211,58 @@ export function AppShell({ children, title, subtitle, actions }: AppShellProps) 
           </div>
         </header>
 
-        <main className="flex-1 p-4 sm:p-8">{children}</main>
+        <main className="flex-1 p-4 pb-28 sm:p-8 sm:pb-28 lg:pb-8">{children}</main>
       </div>
+
+      {/* Bottom navigation on a phone, like WhatsApp: an icon and a label for each place; the active one sits in a pill */}
+      <nav
+        className="no-print fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 backdrop-blur-md lg:hidden"
+        style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+        aria-label="Navigasi bawah"
+      >
+        <ul className="mx-auto grid max-w-xl grid-cols-4">
+          {NAV_ITEMS.map((item) => {
+            const Icon = item.icon;
+            return (
+              <li key={item.to}>
+                <NavLink
+                  to={item.to}
+                  end={item.end}
+                  className="flex flex-col items-center gap-1 pt-2.5 pb-2 text-[11px] font-semibold"
+                >
+                  {({ isActive }) => (
+                    <>
+                      <span
+                        className={`flex h-8 w-16 items-center justify-center rounded-full transition-colors ${
+                          isActive ? "bg-emerald-100 text-emerald-900" : "text-slate-500"
+                        }`}
+                      >
+                        <Icon className="h-[22px] w-[22px]" strokeWidth={isActive ? 2.5 : 2} />
+                      </span>
+                      <span className={isActive ? "text-emerald-900" : "text-slate-500"}>
+                        {item.label}
+                      </span>
+                    </>
+                  )}
+                </NavLink>
+              </li>
+            );
+          })}
+          <li>
+            <button
+              type="button"
+              onClick={() => setMobileOpen(true)}
+              className="flex w-full flex-col items-center gap-1 pt-2.5 pb-2 text-[11px] font-semibold text-slate-500"
+              aria-label="Buka menu akun dan peran"
+            >
+              <span className="flex h-8 w-16 items-center justify-center rounded-full">
+                <CircleUserRound className="h-[22px] w-[22px]" />
+              </span>
+              <span>Akun</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 }

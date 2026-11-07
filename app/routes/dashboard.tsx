@@ -5,6 +5,7 @@ import {
   Users,
   CheckCircle2,
   Wallet,
+  ArrowRight,
   ArrowUpRight,
   Clock,
   Sparkles,
@@ -260,9 +261,10 @@ export default function DashboardPage() {
               </div>
               <Link
                 to="/permohonan"
-                className="text-xs font-bold text-emerald-700 hover:text-emerald-900"
+                className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-900"
               >
-                Lihat Semua →
+                Lihat Semua
+                <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
             <div className="overflow-x-auto">
