@@ -60,6 +60,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   const token = useAuthStore((s) => s.token);
   const hydrated = useAuthStore((s) => s.hydrated);
+  const signedOut = useAuthStore((s) => s.signedOut);
   const hydrate = useAuthStore((s) => s.hydrate);
   const location = useLocation();
   const navigate = useNavigate();
@@ -73,6 +74,12 @@ export default function App() {
     if (!hydrated) return;
     if (token || location.pathname === "/login") return;
 
+    // Someone signed out on purpose: show the login page, do not sign in again
+    if (signedOut) {
+      navigate("/login", { replace: true });
+      return;
+    }
+
     // Auto-sign in as Amil on first visit so evaluators can immediately use the app or switch roles
     setBootstrapping(true);
     switchRoleQuick("amil")
@@ -82,7 +89,7 @@ export default function App() {
       .finally(() => {
         setBootstrapping(false);
       });
-  }, [hydrated, token, location.pathname, navigate]);
+  }, [hydrated, token, signedOut, location.pathname, navigate]);
 
   if (!hydrated || (bootstrapping && location.pathname !== "/login")) {
     return (

@@ -2,6 +2,8 @@ import { create } from "zustand";
 import type { AuthUser, Role } from "./types";
 
 const STORAGE_KEY = "pendis_baznas_session_v1";
+// Set when someone signs out on purpose: the app then stays on the login page instead of signing in as Amil again (see root.tsx).
+const SIGNED_OUT_KEY = "pendis_baznas_signed_out_v1";
 
 export const DEFAULT_API_BASE =
   typeof import.meta !== "undefined" && import.meta.env?.VITE_API_URL
@@ -26,6 +28,25 @@ function readStoredSession(): SessionData | null {
   }
 }
 
+function readSignedOut(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem(SIGNED_OUT_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function writeSignedOut(value: boolean): void {
+  if (typeof window === "undefined") return;
+  try {
+    if (value) window.localStorage.setItem(SIGNED_OUT_KEY, "1");
+    else window.localStorage.removeItem(SIGNED_OUT_KEY);
+  } catch {
+    // ignore storage errors
+  }
+}
+
 function writeStoredSession(data: SessionData | null): void {
   if (typeof window === "undefined") return;
   try {
@@ -43,6 +64,7 @@ interface AuthState {
   token: string | null;
   user: AuthUser | null;
   hydrated: boolean;
+  signedOut: boolean;
   hydrate: () => void;
   setSession: (token: string, user: AuthUser) => void;
   logout: () => void;
@@ -52,21 +74,25 @@ export const useAuthStore = create<AuthState>((set) => ({
   token: null,
   user: null,
   hydrated: false,
+  signedOut: false,
   hydrate: () => {
     const stored = readStoredSession();
     set({
       token: stored?.token ?? null,
       user: stored?.user ?? null,
       hydrated: true,
+      signedOut: !stored && readSignedOut(),
     });
   },
   setSession: (token, user) => {
     writeStoredSession({ token, user });
-    set({ token, user, hydrated: true });
+    writeSignedOut(false);
+    set({ token, user, hydrated: true, signedOut: false });
   },
   logout: () => {
     writeStoredSession(null);
-    set({ token: null, user: null, hydrated: true });
+    writeSignedOut(true);
+    set({ token: null, user: null, hydrated: true, signedOut: true });
   },
 }));
 
