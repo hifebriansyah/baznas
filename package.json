@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "react-router dev",
     "build": "rm -rf build/client build/server && react-router build && node scripts/postbuild.ts",
+    "build:local": "npm run build-storybook && BASE_PATH=/for-fun/baznas/ npm run build",
     "preview": "vite preview --outDir build/client",
     "typecheck": "react-router typegen && tsc",
     "lint": "eslint .",

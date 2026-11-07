@@ -22,7 +22,7 @@ PER_PAGE_MAX = 100
 app = FastAPI(title="Pendis BAZNAS API", version="1.0.0")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.environ.get("ALLOWED_ORIGINS", "https://baznas.situs.id,http://localhost:5173").split(","),
+    allow_origins=os.environ.get("ALLOWED_ORIGINS", "https://baznas.situs.id,http://localhost,http://127.0.0.1,http://localhost:5173,http://127.0.0.1:5173").split(","),
     allow_methods=["*"],
     allow_headers=["Authorization", "Content-Type"],
     max_age=86400,

@@ -105,7 +105,7 @@ def main() -> None:
         "CLOUDFLARE_API_TOKEN": cf_token,
         "D1_DATABASE_ID": D1_DATABASE_ID,
         "AUTH_SECRET": auth_secret,
-        "ALLOWED_ORIGINS": "https://baznas.situs.id,http://localhost:5173,http://127.0.0.1:5173",
+        "ALLOWED_ORIGINS": "https://baznas.situs.id,http://localhost,http://127.0.0.1,http://localhost:5173,http://127.0.0.1:5173",  # http://localhost and http://127.0.0.1: the local Apache copy (.htaccess)
     }
     existing_envs = api_req("GET", f"https://api.vercel.com/v9/projects/{PROJECT_NAME}/env", vercel_token).get("envs", [])
     by_key = {e["key"]: e["id"] for e in existing_envs}

@@ -37,4 +37,5 @@ npm run storybook    # Menjalankan Storybook di http://localhost:6006
 npm run typecheck    # Pemeriksaan tipe React Router + TypeScript
 npm run lint         # Pemeriksaan ESLint
 npm run build        # Build produksi ke build/client
+npm run build:local  # Build untuk Apache lokal di http://localhost/for-fun/baznas/ (BASE_PATH=/for-fun/baznas/, plus Storybook)
 ```
