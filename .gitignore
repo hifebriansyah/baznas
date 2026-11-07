@@ -1,0 +1,14 @@
+node_modules/
+build/
+storybook-static/
+.react-router/
+.env
+.env.*
+!.env.example
+.DS_Store
+backend/.venv/
+backend/__pycache__/
+backend/app/__pycache__/
+*.pyc
+*.db
+.vercel/
