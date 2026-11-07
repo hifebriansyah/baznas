@@ -11,7 +11,7 @@ the share image uses the whole logo and nothing else. Writes, in public/:
   icons/icon-192.png, icon-512.png            the app icon (the emblem on white)
   icons/icon-maskable-512.png   the emblem inside the safe zone: Android crops it to a circle or squircle
   icons/apple-touch-icon.png    180x180
-  icons/favicon-32.png, icons/favicon-16.png, and favicon.ico (16, 32, 48) for browsers that ask for /favicon.ico
+  icons/favicon-32.png, icons/favicon-16.png, and favicon.ico (16, 32, 48): round, the emblem on a white circle with a thin green ring
   og-image.png                  1200x675 (16:9): the whole logo on white, the picture shown when the address is shared
   manifest.webmanifest          the installable app (PWA)
 and app/lib/icon-version.generated.ts: a hash of all of them, added as ?v=... to their addresses (cache busting: browsers keep old favicons).
@@ -80,6 +80,19 @@ def square(im: Image.Image, box, size: int, fill: float, bg=WHITE) -> Image.Imag
     return out
 
 
+def circle_icon(im: Image.Image, box, size: int, fill: float = 0.68) -> Image.Image:
+    """The emblem on a white circle with a thin green ring, transparent outside it (the favicon). Drawn at 8x and scaled down, so the edge is smooth at 16 px."""
+    big = size * 8
+    out = Image.new("RGBA", (big, big), (255, 255, 255, 0))
+    ring = max(2, round(big * 0.055))        # a thin green ring: the circle shows on a white tab bar too
+    ImageDraw.Draw(out).ellipse([0, 0, big - 1, big - 1], fill=WHITE + (255,), outline=GREEN + (255,), width=ring)
+    part = im.crop(box)
+    scale = big * fill / max(part.size)       # the emblem is not round: this keeps its corners inside the circle
+    part = part.resize((max(1, round(part.width * scale)), max(1, round(part.height * scale))), Image.LANCZOS)
+    out.paste(part, ((big - part.width) // 2, (big - part.height) // 2))
+    return out.resize((size, size), Image.LANCZOS)
+
+
 def font(size: int, bold=True):
     for path in ("/System/Library/Fonts/Supplemental/Arial Bold.ttf", "/System/Library/Fonts/HelveticaNeue.ttc", "/Library/Fonts/Arial Bold.ttf",
                  "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"):
@@ -108,10 +121,9 @@ def main():
         square(im, emblem, size, 0.82).save(PUBLIC / "icons" / f"icon-{size}.png", optimize=True)
     square(im, emblem, 512, 0.58).save(PUBLIC / "icons" / "icon-maskable-512.png", optimize=True)   # inside the safe zone (the middle 80% circle)
     square(im, emblem, 180, 0.82).save(PUBLIC / "icons" / "apple-touch-icon.png", optimize=True)
-    for size in (16, 32):
-        square(im, emblem, size * 8, 0.96).resize((size, size), Image.LANCZOS).save(PUBLIC / "icons" / f"favicon-{size}.png", optimize=True)
-    ico = square(im, emblem, 256, 0.96)
-    ico.save(PUBLIC / "favicon.ico", format="ICO", sizes=[(16, 16), (32, 32), (48, 48)])
+    for size in (16, 32):   # the favicon is a circle
+        circle_icon(im, emblem, size).save(PUBLIC / "icons" / f"favicon-{size}.png", optimize=True)
+    circle_icon(im, emblem, 256).save(PUBLIC / "favicon.ico", format="ICO", sizes=[(16, 16), (32, 32), (48, 48)])
     og_image(im, whole).save(PUBLIC / "og-image.png", optimize=True)
 
     manifest = {

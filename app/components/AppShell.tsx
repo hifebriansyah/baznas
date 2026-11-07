@@ -55,7 +55,7 @@ export function AppShell({ children, title, subtitle, actions }: AppShellProps) 
       <div>
         {/* Brand Header */}
         <div className="flex items-center gap-3 border-b border-emerald-900/80 px-6 py-5">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white p-0.5 shadow-inner ring-1 ring-amber-400/40">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white p-1.5 shadow-inner ring-1 ring-amber-400/40">
             <img src={LOGO_MARK} alt="Logo BAZNAS" className="h-full w-full object-contain" />
           </div>
           <div>

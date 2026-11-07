@@ -59,7 +59,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen flex-col justify-center bg-gradient-to-br from-emerald-950 via-emerald-900 to-slate-900 px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-md">
         <div className="flex flex-col items-center text-center">
-          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white p-1.5 shadow-xl ring-2 ring-amber-400/60">
+          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white p-3 shadow-xl ring-2 ring-amber-400/60">
             <img src={LOGO_MARK} alt="Logo BAZNAS Kabupaten Cianjur" className="h-full w-full object-contain" />
           </div>
           <h1 className="mt-4 text-2xl font-extrabold tracking-tight text-white">
